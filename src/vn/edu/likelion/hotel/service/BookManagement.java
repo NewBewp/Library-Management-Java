@@ -97,36 +97,37 @@ public class BookManagement implements Management {
         Scanner sc = new Scanner(System.in);
         //Tim id nguoi muon sach
         System.out.println("Enter Borrower ID to rented: ");
-        int borrower_id = sc.nextInt();
-
+        int id_borrower = sc.nextInt();
+        //Tim id cuon sach cho thue
         System.out.println("Enter Book ID to rented: ");
-        int book_id = sc.nextInt();
-
+        int id_rentedBook = sc.nextInt();
+        //Nhap so luong sach cho thue
         System.out.println("Enter Quantity Book to rented: ");
         int quantity_book = sc.nextInt();
+        //nhap so ngay cho thue
+        System.out.println("Enter number of dates to rented: ");
+        long number_of_dates = sc.nextLong();
 
-        
         for (Borrower borrower: BorrowerManagement.borrowersArrayList) {
-            if (borrower.getId_borrower()==borrower_id ){
-                rentedBooks.setId_borrower(borrower.getId_borrower());
-
-                rentedBooks.setName_borrower(borrower.getName_borrower());
-                LocalDate borrow_date = borrower.getBorrow_date();
-                String return_date = borrower.getReturn_date();
-                //tim id sach se cho muon
-                for (Book book : bookArrayList) {
-                    if (book_id == book.getBook_id()) {
-                        rentedBooks.setId_rentedBook(book.getBook_id());
-                        rentedBooks.setName_rentedBook(book.getBook_name());
-                        rentedBooks.setQuantityRentedBook(book.getBook_quantity()-quantity_book);
+            if (borrower.getId_borrower()==id_borrower ){
+                for (Book book: bookArrayList) {
+                    if (book.getBook_id()==id_rentedBook && book.getBook_quantity()>=quantity_book){
+                        book.setBook_quantity(book.getBook_quantity()-quantity_book);
+                        RentedBooks rentedBooks = new RentedBooks(
+                                id_borrower,
+                                id_rentedBook,
+                                book.getBook_name(),
+                                LocalDate.now(),
+                                LocalDate.now().plusDays(number_of_dates)
+                                );
+                        rentedBooksList.add(rentedBooks);
+                        System.out.println("Book Rented successfully: " + rentedBooks);
+                        return;
                     }
                 }
-
+                System.out.println("Book not found.");
             }
-
         }
         showAllRentedBooks();
     }
-
-
 }
