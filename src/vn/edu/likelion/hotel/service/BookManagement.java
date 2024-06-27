@@ -118,7 +118,8 @@ public class BookManagement implements Management {
                                 id_rentedBook,
                                 book.getBook_name(),
                                 LocalDate.now(),
-                                LocalDate.now().plusDays(number_of_dates)
+                                LocalDate.now().plusDays(number_of_dates),
+                                book.getBook_quantity()
                                 );
                         rentedBooksList.add(rentedBooks);
                         System.out.println("Book Rented successfully: " + rentedBooks);
